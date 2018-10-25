@@ -4,4 +4,4 @@
 
 
 compile:
-	sbcl --load multipleMatricesSequential.lisp
+	sbcl --load multiplyMatricesSequential.lisp

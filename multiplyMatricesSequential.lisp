@@ -1,6 +1,6 @@
 ;; Author: Seth M. Fuller
 ;; Date: 10/22/2018
-;; File: initMatrix.lisp
+;; File: multiplyMatricesSequential.lisp
 
 
 ;; Load the array-operations package
