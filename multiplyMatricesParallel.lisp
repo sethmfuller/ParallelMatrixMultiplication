@@ -3,18 +3,18 @@
 ;; File: multiplyMatricesParallel.lisp
 
 
-;; Load the array-operations package
+;; Import packages
 (ql:quickload :array-operations)
 (ql:quickload :lparallel)
 
 ;; Create the worker threads
-(setf lparallel:*kernel* (lparallel:make-kernel 2))
+(setf lparallel:*kernel* (lparallel:make-kernel 5))
 
 ;; Create a matrix with random values
 (defun InitializeMatrix () 
     "Creates a matrix of size rows x columns"
    
-    (aops:generate (lambda () (random 10)) '(10 10))
+    (aops:generate (lambda () (random 10)) '(100 100))
 )
 
 (defun MultiplyRow (matrix1RowIndex matrix2ColumnIndex) 
@@ -50,11 +50,11 @@
     (defvar newMatrixColumns matrix1Rows)
 
     ;; Create an empty new matrix will with nil values
-    (defvar newMatrix (aops:generate (lambda () ()) '(10 10)))
+    (defvar newMatrix (aops:generate (lambda () ()) '(100 100)))
 
     ;; Loop through ever row and multiply
     (time (lparallel:pdotimes (i matrix1Rows)
-        (lparallel:pdotimes (j matrix2Columns)
+        (dotimes (j matrix2Columns)
             (MultiplyRow i j))))
 
     ;; Go https://lispcookbook.github.io/cl-cookbook/process.html to find more info on parallel functions
@@ -65,8 +65,7 @@
 (defvar matrix1 (InitializeMatrix))
 (defvar matrix2 (InitializeMatrix))
 
+;; Multiply two matricies in parallel
 (MultiplyMatrices)
-
-(print newMatrix)
 
 (EXIT)

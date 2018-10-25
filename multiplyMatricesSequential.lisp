@@ -10,7 +10,7 @@
 (defun InitializeMatrix () 
     "Creates a matrix of size rows x columns"
    
-    (aops:generate (lambda () (random 10)) '(2 2))
+    (aops:generate (lambda () (random 10)) '(100 100))
 )
 
 (defun MultiplyRow (matrix1RowIndex matrix2ColumnIndex) 
@@ -46,7 +46,7 @@
     (defvar newMatrixColumns matrix1Rows)
 
     ;; Create an empty new matrix will with nil values
-    (defvar newMatrix (aops:generate (lambda () ()) '(2 2)))
+    (defvar newMatrix (aops:generate (lambda () ()) '(100 100)))
 
     ;; Loop through ever row and multiply
     (time (loop for i from 0 below matrix1Rows
@@ -59,8 +59,7 @@
 (defvar matrix1 (InitializeMatrix))
 (defvar matrix2 (InitializeMatrix))
 
+;; Multiply two matricies sequentially
 (MultiplyMatrices)
-
-(print newMatrix)
 
 (EXIT)
