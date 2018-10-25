@@ -56,6 +56,8 @@
     (time (lparallel:pdotimes (i matrix1Rows)
         (lparallel:pdotimes (j matrix2Columns)
             (MultiplyRow i j))))
+
+    ;; Go https://lispcookbook.github.io/cl-cookbook/process.html to find more info on parallel functions
 )
 
 
