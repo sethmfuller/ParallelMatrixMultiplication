@@ -4,4 +4,4 @@
 
 
 compile:
-	sbcl --load initMatrix.lisp
+	sbcl --load multipleMatricesSequential.lisp
