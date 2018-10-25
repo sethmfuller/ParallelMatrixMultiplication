@@ -11,9 +11,10 @@
 (setf lparallel:*kernel* (lparallel:make-kernel 5))
 
 ;; Create a matrix with random values
-(defun InitializeMatrix () 
+(defun InitializeMatrix (rows columns) 
     "Creates a matrix of size rows x columns"
    
+    (print rows)
     (aops:generate (lambda () (random 10)) '(100 100))
 )
 
@@ -62,8 +63,8 @@
 
 
 ;; Create two globally scoped matrices
-(defvar matrix1 (InitializeMatrix))
-(defvar matrix2 (InitializeMatrix))
+(defvar matrix1 (InitializeMatrix 1 2))
+(defvar matrix2 (InitializeMatrix 2 1))
 
 ;; Multiply two matricies in parallel
 (MultiplyMatrices)

@@ -6,6 +6,11 @@
 ;; Load the array-operations package
 (ql:quickload :array-operations)
 
+;; Create two globally scoped matrices
+(defvar matrix1)
+(defvar matrix2)
+(defvar newMatrix)
+
 ;; Create a matrix with random values
 (defun InitializeMatrix () 
     "Creates a matrix of size rows x columns"
@@ -29,24 +34,20 @@
 (defun MultiplyMatrices ()
     "Multiplies two matrices"
 
-    ;; Get the dimensions of matrix 1
-    (destructuring-bind (n m) (array-dimensions matrix1)
-        (setq matrix1Rows n)
-        (setq matrix1Columns m)
-    )
+    ;; (setq matrix1Rows (car (array-dimensions matrix1)))
+    ;; (setq matrix2Columns (car (cdr (array-dimensions matrix2))))
 
-    ;; Get the dimensions of matrix 2
-    (destructuring-bind (n m) (array-dimensions matrix2)
-        (setq matrix2Columns m)
-        (setq matrix2Rows n)
-    )
-
-    ;; Determine dimensions of new matrix
-    (defvar newMatrixRows matrix2Columns)
-    (defvar newMatrixColumns matrix1Rows)
+    (print (typep 5))
+    (print (typep (car (array-dimensions matrix1))))
 
     ;; Create an empty new matrix will with nil values
-    (defvar newMatrix (aops:generate (lambda () ()) '(100 100)))
+    ;; (setf newMatrix (aops:generate 
+    ;;     (lambda () ()) '(
+    ;;         (parse-integer (car (array-dimensions matrix1))) 
+    ;;         (car (cdr (array-dimensions matrix2))))))
+
+    (setf newMatrix (aops:generate 
+        (lambda () ()) '(1 1)))
 
     ;; Loop through ever row and multiply
     (time (loop for i from 0 below matrix1Rows
@@ -54,10 +55,10 @@
             do (MultiplyRow i j))))
 )
 
+;; Set the global variables to two new initialize matrices
+(setf matrix1 (InitializeMatrix))
+(setf matrix2 (InitializeMatrix))
 
-;; Create two globally scoped matrices
-(defvar matrix1 (InitializeMatrix))
-(defvar matrix2 (InitializeMatrix))
 
 ;; Multiply two matricies sequentially
 (MultiplyMatrices)
