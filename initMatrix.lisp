@@ -13,12 +13,20 @@
     (aops:generate (lambda () (random 10)) '(2 2))
 )
 
-(defun MultiplyRow () 
-    
+(defun MultiplyRow (matrix1RowIndex matrix2ColumnIndex) 
+    "Multiply the matrix1 row at the specified index by 
+     the matrix2 column at the specified index"
+
+    (setq sum 0)
+
+    (loop for i from 0 below (length (aops:sub matrix1 matrix1RowIndex))
+        do (setf sum (+ sum (* (aref (aops:sub matrix1 matrix1RowIndex) i) (aref (aops:sub matrix2 matrix2ColumnIndex) i)))))
+
+    (setf (aref newMatrix matrix1RowIndex matrix2ColumnIndex) sum)
 )
 
 ;; Multiply two matrices together
-(defun MultiplyMatrices (matrix1 matrix2)
+(defun MultiplyMatrices ()
     "Multiplies two matrices"
 
     ;; Get the dimensions of matrix 1
@@ -29,33 +37,30 @@
 
     ;; Get the dimensions of matrix 2
     (destructuring-bind (n m) (array-dimensions matrix2)
-        (setq matrix2Rows n)
         (setq matrix2Columns m)
+        (setq matrix2Rows n)
     )
 
     ;; Determine dimensions of new matrix
-    (setq newMatrixRows matrix2Columns)
-    (setq newMatrixColumns matrix1Rows)
+    (defvar newMatrixRows matrix2Columns)
+    (defvar newMatrixColumns matrix1Rows)
 
     ;; Create an empty new matrix will with nil values
-    (setq newMatrix (aops:generate (lambda () ()) '(2 2)))
+    (defvar newMatrix (aops:generate (lambda () ()) '(2 2)))
 
-    
-
+    ;; Loop through ever row and multiply
+    (loop for i from 0 below matrix1Rows
+        do (loop for j from 0 below matrix2Columns
+            do (MultiplyRow i j)))
 )
 
 
-;; Create two matrices
-(defvar m1 (InitializeMatrix))
-(defvar m2 (InitializeMatrix))
+;; Create two globally scoped matrices
+(defvar matrix1 (InitializeMatrix))
+(defvar matrix2 (InitializeMatrix))
 
-(MultiplyMatrices m1 m2)
+(MultiplyMatrices)
 
-
-;; (loop for i from 0 below matrix1Rows do
-;;     (loop for j from 0 below matrix1Columns do
-;;         (format t "a[~a ~a] = ~a~%" i j (aref matrix1 i j))))
-
-;; (print matrix1)
+(print newMatrix)
 
 (EXIT)
