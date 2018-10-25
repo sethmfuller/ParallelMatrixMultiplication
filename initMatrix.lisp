@@ -2,13 +2,21 @@
 ;; Date: 10/22/2018
 ;; File: initMatrix.lisp
 
-(defun InitializeMatrix (rows columns) 
-    "Creates a matrix of size rows x columns"
 
-    (setf matrix (make-array '(rows columns)))
-    (write matrix)
+;; Load the array-operations package
+(ql:quickload :array-operations)
+
+
+(defun InitializeMatrix () 
+    "Creates a matrix of size rows x columns"
+   
+    (aops:generate (lambda () (random 10)) '(10 10))
 )
 
-(InitializeMatrix 4 4)
+;; Create two matrices
+(defvar matrix1 (InitializeMatrix))
+(defvar matrix2 (InitializeMatrix))
+
+(print (aref matrix1 0 0))
 
 (exit)
