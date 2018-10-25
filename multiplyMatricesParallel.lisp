@@ -1,16 +1,20 @@
 ;; Author: Seth M. Fuller
 ;; Date: 10/22/2018
-;; File: multiplyMatricesSequential.lisp
+;; File: multiplyMatricesParallel.lisp
 
 
 ;; Load the array-operations package
 (ql:quickload :array-operations)
+(ql:quickload :lparallel)
+
+;; Create the worker threads
+(setf lparallel:*kernel* (lparallel:make-kernel 2))
 
 ;; Create a matrix with random values
 (defun InitializeMatrix () 
     "Creates a matrix of size rows x columns"
    
-    (aops:generate (lambda () (random 10)) '(2 2))
+    (aops:generate (lambda () (random 10)) '(10 10))
 )
 
 (defun MultiplyRow (matrix1RowIndex matrix2ColumnIndex) 
@@ -46,12 +50,12 @@
     (defvar newMatrixColumns matrix1Rows)
 
     ;; Create an empty new matrix will with nil values
-    (defvar newMatrix (aops:generate (lambda () ()) '(2 2)))
+    (defvar newMatrix (aops:generate (lambda () ()) '(10 10)))
 
     ;; Loop through ever row and multiply
-    (time (loop for i from 0 below matrix1Rows
-        do (loop for j from 0 below matrix2Columns
-            do (MultiplyRow i j))))
+    (time (lparallel:pdotimes (i matrix1Rows)
+        (lparallel:pdotimes (j matrix2Columns)
+            (MultiplyRow i j))))
 )
 
 

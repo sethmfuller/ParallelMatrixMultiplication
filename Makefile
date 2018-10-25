@@ -3,5 +3,8 @@
 # Filename: Makefile
 
 
-compile:
+seq:
 	sbcl --load multiplyMatricesSequential.lisp
+
+par:
+	sbcl --load multiplyMatricesParallel.lisp
