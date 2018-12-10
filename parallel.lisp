@@ -8,14 +8,13 @@
 (ql:quickload :lparallel)
 
 ;; Create the worker threads
-(setf lparallel:*kernel* (lparallel:make-kernel 5))
+(setf lparallel:*kernel* (lparallel:make-kernel 8))
 
 ;; Create a matrix with random values
 (defun InitializeMatrix (rows columns) 
     "Creates a matrix of size rows x columns"
    
-    (print rows)
-    (aops:generate (lambda () (random 10)) '(100 100))
+    (aops:generate (lambda () (random 10)) '(200 200))
 )
 
 (defun MultiplyRow (matrix1RowIndex matrix2ColumnIndex) 
@@ -51,7 +50,7 @@
     (defvar newMatrixColumns matrix1Rows)
 
     ;; Create an empty new matrix will with nil values
-    (defvar newMatrix (aops:generate (lambda () ()) '(100 100)))
+    (defvar newMatrix (aops:generate (lambda () ()) '(200 200)))
 
     ;; Loop through ever row and multiply
     (time (lparallel:pdotimes (i matrix1Rows)

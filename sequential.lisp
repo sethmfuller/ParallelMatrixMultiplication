@@ -1,21 +1,17 @@
 ;; Author: Seth M. Fuller
 ;; Date: 10/22/2018
-;; File: multiplyMatricesSequential.lisp
+;; File: multiplyMatricesParallel.lisp
 
 
-;; Load the array-operations package
+;; Import packages
 (ql:quickload :array-operations)
 
-;; Create two globally scoped matrices
-(defvar matrix1)
-(defvar matrix2)
-(defvar newMatrix)
-
 ;; Create a matrix with random values
-(defun InitializeMatrix () 
+(defun InitializeMatrix (rows columns) 
     "Creates a matrix of size rows x columns"
    
-    (aops:generate (lambda () (random 10)) '(100 100))
+    (print rows)
+    (aops:generate (lambda () (random 10)) '(200 200))
 )
 
 (defun MultiplyRow (matrix1RowIndex matrix2ColumnIndex) 
@@ -34,31 +30,35 @@
 (defun MultiplyMatrices ()
     "Multiplies two matrices"
 
-    ;; (setq matrix1Rows (car (array-dimensions matrix1)))
-    ;; (setq matrix2Columns (car (cdr (array-dimensions matrix2))))
+    ;; Get the dimensions of matrix 1
+    (destructuring-bind (n m) (array-dimensions matrix1)
+        (setq matrix1Rows n)
+        (setq matrix1Columns m)
+    )
 
-    (print (typep 5))
-    (print (typep (car (array-dimensions matrix1))))
+    ;; Get the dimensions of matrix 2
+    (destructuring-bind (n m) (array-dimensions matrix2)
+        (setq matrix2Columns m)
+        (setq matrix2Rows n)
+    )
+
+    ;; Determine dimensions of new matrix
+    (defvar newMatrixRows matrix2Columns)
+    (defvar newMatrixColumns matrix1Rows)
 
     ;; Create an empty new matrix will with nil values
-    ;; (setf newMatrix (aops:generate 
-    ;;     (lambda () ()) '(
-    ;;         (parse-integer (car (array-dimensions matrix1))) 
-    ;;         (car (cdr (array-dimensions matrix2))))))
-
-    (setf newMatrix (aops:generate 
-        (lambda () ()) '(1 1)))
+    (defvar newMatrix (aops:generate (lambda () ()) '(200 200)))
 
     ;; Loop through ever row and multiply
-    (time (loop for i from 0 below matrix1Rows
-        do (loop for j from 0 below matrix2Columns
-            do (MultiplyRow i j))))
+    (time (dotimes (i matrix1Rows)
+        (dotimes (j matrix2Columns)
+            (MultiplyRow i j))))
 )
 
-;; Set the global variables to two new initialize matrices
-(setf matrix1 (InitializeMatrix))
-(setf matrix2 (InitializeMatrix))
 
+;; Create two globally scoped matrices
+(defvar matrix1 (InitializeMatrix 1 2))
+(defvar matrix2 (InitializeMatrix 2 1))
 
 ;; Multiply two matricies sequentially
 (MultiplyMatrices)
